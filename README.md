@@ -1,4 +1,4 @@
-
+<!-- 
 
 # ⚡️GmailGenius: Supercharge your Gmail
 *Automatically processes new emails, extracts data from attachments, and organizes everything in a spreadsheet!*
@@ -97,4 +97,4 @@ You'll be redirected to composio website, login, get the API key and paste it
 ## 🛡️ License
 
 Composio is licensed under the Elastic License - see the [LICENSE](https://github.com/composiodev/composio/blob/master/LICENSE) file for details.
-  
+   -->
