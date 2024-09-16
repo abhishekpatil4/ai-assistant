@@ -9,7 +9,7 @@ const AssignTask = () => {
 
     const handleAddTask = async () => {
         console.log("Adding task:", task);
-        const response = await fetch('http://localhost:8000/assigntask', {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/assigntask`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const AssignTask = () => {
         formData.append('audio', blob, 'recording.wav');
 
         try {
-            const response = await fetch('http://localhost:8000/sendaudio', {
+            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/newentity", {
                 method: 'POST',
                 body: formData,
             });

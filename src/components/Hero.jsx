@@ -9,7 +9,7 @@ const Hero = () => {
         <div className="my-10">
             <ActionButton displayName={"Get started"} link={"#"} />
         </div>
-        <iframe className="m-auto md:min-w-[854px] md:min-h-[480px]" src="https://www.loom.com/embed/c1ff7adf304d47259f71fae09e5f738c?sid=8faf168d-9647-4ad8-b103-0acc55feee9e"  allow="autoplay"></iframe>
+        <iframe className="m-auto md:min-w-[854px] md:min-h-[480px]" src="https://drive.google.com/file/d/1ayesXzHCN1j9zzPh_t8edL7uWquIZg1x/preview" width="640" height="480" allow="autoplay"></iframe>
     </>
 }
 
