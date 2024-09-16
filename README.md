@@ -1,4 +1,4 @@
-#AI Assistant: Just say it, let AI do the rest
+# AI Assistant: Just say it, let AI do the rest
 *Enhance your productivity with our AI assistant! Effortlessly send emails on Gmail, create meetings in Google Meet, add tasks to Google Tasks, and send messages on Slack, all through simple prompts or voice commands*
 
 <!-- 
