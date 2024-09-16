@@ -10,8 +10,7 @@ import AssignTask from "../components/AssignTask";
 const Settings = ({ user }) => {
     const { enqueueSnackbar } = useSnackbar();
     const [username, setUsername] = useState("");
-    // const [twitterAccount, setTwitterAccount] = useState("No connected account");
-    const [twitterAccount, setTwitterAccount] = useState("Account connected");
+    const [twitterAccount, setTwitterAccount] = useState("No connected account");
     const [twitterAccountLoading, setTwitterAccountLoading] = useState(false);
     const [userDetails, setUserDetails] = useState(null);
     const [authorisedUsers, setAuthorisedUsers] = useState([]);
