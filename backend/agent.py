@@ -9,19 +9,18 @@ from datetime import datetime
 from langchain_openai import ChatOpenAI
 load_dotenv()
 
-# llm = ChatOpenAI(model="gpt-4o")
-# llm=ChatGroq(temperature=0,model_name="llama3-70b-8192", api_key='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')
-llm = ChatOpenAI(
-    openai_api_base="https://api.groq.com/openai/v1",
-    openai_api_type=os.environ.get("GROQ_API_KEY"),
-    model_name="llama-3.1-70b-versatile",
-    temperature=0,
-    max_tokens=1000,
-)
-# ComposioToolSet instance
-composio_toolset = ComposioToolSet(api_key=os.environ.get("COMPOSIO_API_KEY"))
+llm = ChatOpenAI(model="gpt-4o")
+# llm = ChatOpenAI(
+#     openai_api_base="https://api.groq.com/openai/v1",
+#     openai_api_type=os.environ.get("GROQ_API_KEY"),
+#     model_name="llama-3.1-70b-versatile",
+#     temperature=0,
+#     max_tokens=1000,
+# )
 
-def perform_task(task_description:str) -> str:
+def perform_task(task_description:str, ent_id:str) -> str:
+    # ComposioToolSet instance
+    composio_toolset = ComposioToolSet(api_key=os.environ.get("COMPOSIO_API_KEY"), entity_id=ent_id)
     # Tools
     tools = composio_toolset.get_actions(actions=[Action.GOOGLETASKS_INSERT_TASK, Action.GOOGLEMEET_CREATE_MEET, Action.GMAIL_SEND_EMAIL, Action.GMAIL_CREATE_EMAIL_DRAFT, Action.SLACKBOT_SENDS_A_MESSAGE_TO_A_SLACK_CHANNEL])
 

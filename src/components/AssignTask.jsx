@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ReactMediaRecorder } from 'react-media-recorder';
 import { Audio } from 'react-loader-spinner';
 
-const AssignTask = () => {
+const AssignTask = ({ user }) => {
     const [task, setTask] = useState('');
     const [isRecording, setIsRecording] = useState(false);
     const [gettingText, setGettingText] = useState(false);
@@ -14,7 +14,10 @@ const AssignTask = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ task }),
+            body: JSON.stringify({ 
+                task,
+                entityId: user.email.split("@")[0]
+            }),
         });
         if (response.ok) {
             const result = await response.json();
@@ -33,27 +36,46 @@ const AssignTask = () => {
     const sendAudioToBackend = async (blob) => {
         console.log("Sending audio...");
         setGettingText(true);
-        if (!blob) return;
+        if (!blob) {
+            console.error("No blob provided");
+            setGettingText(false);
+            return;
+        }
 
-        console.log("Blob size:", blob.size); // Print the blob size
+        console.log("Blob size:", blob.size);
 
         const formData = new FormData();
         formData.append('audio', blob, 'recording.wav');
+        formData.append('entity_id', user.email.split("@")[0]);  // Changed from 'entityId' to 'entity_id'
+
+        // Log the formData contents
+        for (let [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+        }
 
         try {
-            const response = await fetch(import.meta.env.VITE_BACKEND_URL + "/newentity", {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/sendaudio`, {
                 method: 'POST',
                 body: formData,
             });
+            
+            const responseData = await response.json();
+            
             if (response.ok) {
-                const result = await response.json();
-                console.log('Audio sent successfully:', result);
+                console.log('Audio sent successfully:', responseData);
+                setTask(responseData.transcription);  // Changed from 'text' to 'transcription'
             } else {
-                const errorResponse = await response.json();
-                console.error('Failed to send audio:', errorResponse);
+                console.error('Failed to send audio:', responseData);
+                if (responseData.detail && Array.isArray(responseData.detail)) {
+                    responseData.detail.forEach(error => {
+                        console.error(`Error: ${error.msg}, Location: ${error.loc.join('.')}`);
+                    });
+                }
+                throw new Error('Failed to send audio');
             }
         } catch (error) {
             console.error('Error sending audio:', error);
+            // You might want to show an error message to the user here
         } finally {
             setGettingText(false);
         }

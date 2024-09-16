@@ -1,13 +1,12 @@
 import { auth } from "../config/firebase";
 import axios from "axios";
 
-const linkTwitterAccount = async (setTwitterAccountLoading, user) => {
+const linkAccount = async (user, appType) => {
     try {
-        setTwitterAccountLoading(true);
         const idToken = await auth.currentUser.getIdToken(true);
         const data = {
             username: user,
-            appType: 'TWITTER',
+            appType: appType,
             redirectUrl: window.location.href
         };
         const newEntityURL = import.meta.env.VITE_BACKEND_URL + "/newentity"
@@ -24,8 +23,6 @@ const linkTwitterAccount = async (setTwitterAccountLoading, user) => {
         }
     } catch (error) {
         console.error('Error sending data:', error);
-    } finally {
-        setTwitterAccountLoading(false);
     }
 }
 
@@ -51,4 +48,4 @@ const checkConnectionStatus = async (appType, setAccountStatus, entityId) => {
     }
 }
 
-export { checkConnectionStatus, linkTwitterAccount };
+export { checkConnectionStatus, linkAccount };

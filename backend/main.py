@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException, Request, Depends
+from fastapi import FastAPI, HTTPException, Request, Depends, UploadFile, File, Form
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
@@ -91,7 +91,7 @@ def transcribe(path: str):
     return translation.text
 
 @app.post('/sendaudio')
-async def send_audio(audio: UploadFile = File(...)):
+async def send_audio(audio: UploadFile = File(...), entity_id: str = Form(...)):
     if audio.filename == '':
         return {'error': 'No selected file'}, 400
     
@@ -101,18 +101,22 @@ async def send_audio(audio: UploadFile = File(...)):
     
     path = os.path.join('audios', audio.filename)
     res = transcribe(path)
-    perform_task(res)
+    result = perform_task(res, entity_id)
     print("\n\nTranscription: ", res)
-    return res
+    return {'transcription': res, 'task_result': result}
 
 @app.post("/assigntask")
 async def assign_task(task_data: dict):
     task_description = task_data.get('task')
+    entity_id = task_data.get('entityId')
     
     if not task_description:
         return {'error': 'Task description is required'}, 400
     
-    result = perform_task(task_description)
+    if not entity_id:
+        return {'error': 'Entity ID is required'}, 400
+    
+    result = perform_task(task_description, entity_id)
     return {'result': result}
 
 
